@@ -7,7 +7,7 @@ import uuid
 
 APPS_DIR = "apps"
 
-if not os.exists(APPS_DIR):
+if not os.path.exists(APPS_DIR):
     os.mkdir(APPS_DIR)
 
 DESCRIPTIONS_FILE = "descriptions.json"
