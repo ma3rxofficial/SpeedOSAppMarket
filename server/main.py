@@ -6,6 +6,10 @@ from datetime import datetime
 import uuid
 
 APPS_DIR = "apps"
+
+if not os.exists(APPS_DIR):
+    os.mkdir(APPS_DIR)
+
 DESCRIPTIONS_FILE = "descriptions.json"
 DATES_FILE = "dates.json"
 USERS_FILE = "users.json"
