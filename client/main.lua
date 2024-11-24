@@ -252,8 +252,6 @@ function drawAppPage(app)
                         drawUploadPage()
                         return
                     elseif y == 6 then
-                        term.clear()
-                        print("xyu")
                         SpeedOS.Close()
                         return
                     end
@@ -571,8 +569,6 @@ function drawUploadPage()
                         end
                     elseif y == 6 then
                         if authorized then
-                            term.clear()
-                            print("xyu")
                             SpeedOS.Close()
                             return
                         else
@@ -901,7 +897,7 @@ function drawRegisterPage()
                         drawUploadPage()
                         return
                     elseif y == 6 then
-                        error()
+                        SpeedOS.Close()
                         return
                     end
                 end
