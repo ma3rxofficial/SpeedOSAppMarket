@@ -55,7 +55,7 @@ function downloadApp(appName, save_as)
 
         SpeedOS.Run(save_as)
         sleep(1)
-        -- fs.delete(save_as)
+        fs.delete(save_as)
 
         windows.attention({"Done!"}, {'App ' .. '"' .. save_as .. '"', "successfully downloaded"})
         listApps()
