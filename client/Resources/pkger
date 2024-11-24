@@ -21,6 +21,8 @@ end
 sDest = sDest .. %@2
 local tPackage=pkg
 makeFolder(sDest,tPackage)
+sleep(0.01)
+SpeedOS.Close()
 ]]
 
 function addFile(_package,_path)
