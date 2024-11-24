@@ -1,3 +1,8 @@
+if SpeedOS then
+    SpeedOS.ToolBarColour = colours.white
+    SpeedOS.ToolBarTextColour = colours.black
+end
+
 SpeedOS.LoadAPI("SpeedAPI/windows")
 SpeedOS.LoadAPI("Programs/AppMarket.program/Resources/pkger")
 
@@ -50,7 +55,7 @@ function downloadApp(appName, save_as)
 
         SpeedOS.Run(save_as)
         sleep(1)
-        fs.delete(save_as)
+        -- fs.delete(save_as)
 
         windows.attention({"Done!"}, {'App ' .. '"' .. save_as .. '"', "successfully downloaded"})
         listApps()
@@ -314,8 +319,6 @@ function listApps()
 
                     term.setBackgroundColor(colors.white)
                     term.setTextColor(colors.black)
-                    term.setCursorPos(menuWidth + 2, 2)
-                    term.write("Apps List")
 
                     local startIndex = (currentPage - 1) * appsPerPage + 1
                     local endIndex = math.min(startIndex + appsPerPage - 1, #apps)
