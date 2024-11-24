@@ -576,8 +576,6 @@ function drawUploadPage()
                             return
                         end
                     elseif y == 8 and not authorized then
-                        term.clear()
-                        print("xyu")
                         SpeedOS.Close()
                     end
                 end
