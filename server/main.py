@@ -91,25 +91,6 @@ def get_uploader(app_name):
     return uploaders.get(app_name, "Unknown")
 
 # Загрузка уникальных ID из файла
-def load_ids():
-    if os.path.exists(IDS_FILE):
-        with open(IDS_FILE, "r") as f:
-            return json.load(f)
-    return {}
-
-# Сохранение ID
-def save_id(app_name, app_id):
-    ids = load_ids()
-    ids[app_name] = app_id
-    with open(IDS_FILE, "w") as f:
-        json.dump(ids, f)
-
-# Получение ID приложения
-def get_id(app_name):
-    ids = load_ids()
-    return ids.get(app_name)
-
-# Загрузка уникальных ID из файла
 def load_ids2():
     if os.path.exists(IDS2_FILE):
         with open(IDS2_FILE, "r") as f:
@@ -151,10 +132,8 @@ class AppStoreHandler(BaseHTTPRequestHandler):
                     filepath = os.path.join(APPS_DIR, filename)
                     if os.path.isfile(filepath):
                         app_name = os.path.splitext(filename)[0]  # Оригинальное имя приложения
-                        app_id = get_id(app_name)  # Получаем ID приложения
                         app_name2 = get_id2(app_name)
                         apps.append({
-                            "id": app_id,
                             "name": app_name,
                             "name2": app_name2,
                             "size": os.path.getsize(filepath),
@@ -169,7 +148,7 @@ class AppStoreHandler(BaseHTTPRequestHandler):
             # Форматируем список приложений в Lua-таблицу
             response_text = "return {\n"
             for app in apps:
-                response_text += f"  {{id = \"{app['id']}\", name = \"{app['name']}\", name2 = \"{app['name2']}\", size = {app['size']}, description = \"{app['description']}\", date = \"{app['date']}\", uploader = \"{app['uploader']}\"}},\n"
+                response_text += f"  {{name = \"{app['name']}\", name2 = \"{app['name2']}\", size = {app['size']}, description = \"{app['description']}\", date = \"{app['date']}\", uploader = \"{app['uploader']}\"}},\n"
             response_text += "}"
 
             self.send_response(200)
@@ -191,7 +170,6 @@ class AppStoreHandler(BaseHTTPRequestHandler):
             else:
                 self.send_response(404)
                 self.end_headers()
-
         else:
             self.send_response(404)
             self.end_headers()
