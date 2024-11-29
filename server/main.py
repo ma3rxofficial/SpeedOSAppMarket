@@ -16,7 +16,6 @@ DESCRIPTIONS_FILE = "descriptions.json"
 DATES_FILE = "dates.json"
 USERS_FILE = "users.json"
 UPLOADERS_FILE = "uploaders.json"
-IDS_FILE = "ids.json"  # Файл для хранения уникальных ID
 IDS2_FILE = "ids2.json"
 
 # Загрузка описаний из файла
