@@ -89,7 +89,7 @@ def get_uploader(app_name):
     uploaders = load_uploaders()
     return uploaders.get(app_name, "Unknown")
 
-# Загрузка уникальных ID из файла
+# Загрузка ID из файла
 def load_ids2():
     if os.path.exists(IDS2_FILE):
         with open(IDS2_FILE, "r") as f:
@@ -110,7 +110,7 @@ def get_id2(unique_name):
 
 # Генерация уникального имени для файла
 def generate_unique_filename(app_name):
-    app_id = str(uuid.uuid4())  # Генерируем уникальный ID для каждого файла
+    app_id = str(uuid.uuid4())  # Генерация уникального ID для файла с помощью UUID
     file_extension = os.path.splitext(app_name)[1]  # Получаем расширение файла
     return app_id + file_extension  # Уникальное имя файла
 
