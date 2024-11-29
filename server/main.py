@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib.parse as urlparse
 import os
+import re
 import json
 from datetime import datetime
 import uuid
@@ -8,8 +9,14 @@ import uuid
 # Папка с приложениями
 APPS_DIR = "apps"
 
+# Папка с иконками
+ICONS_DIR = "icons"
+
 if not os.path.exists(APPS_DIR):
     os.mkdir(APPS_DIR)
+
+if not os.path.exists(ICONS_DIR):
+    os.mkdir(ICONS_DIR)
 
 # Пути к файлам с описаниями, датами и пользователями
 DESCRIPTIONS_FILE = "descriptions.json"
@@ -118,6 +125,15 @@ def generate_unique_filename(app_name):
 def replace_double_quotes_with_single(string):
     return string.replace('"', "'")
 
+# Извлечение иконки
+def extract_icon(lua_string, app_id):
+    # Шаблон для поиска значения параметра "icon"
+    match = re.search(r'\["icon"\]\s*=\s*\[?(["\'])(.*?)\1\]?[,]?', lua_string, re.DOTALL)
+    if match:
+        icon_value = match.group(2)  # Извлекаем значение внутри кавычек
+        with open(ICONS_DIR + "/" + app_id, "w", encoding="utf-8") as file:
+            file.write(icon_value)
+
 
 class AppStoreHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -169,6 +185,21 @@ class AppStoreHandler(BaseHTTPRequestHandler):
             else:
                 self.send_response(404)
                 self.end_headers()
+        elif parsed_path.path.startswith("/icons/"):
+            # Отдаем конкретное приложение
+            app_name = os.path.basename(parsed_path.path)
+            filepath = os.path.join(ICONS_DIR, app_name)
+
+            if os.path.exists(filepath) and os.path.isfile(filepath):
+                self.send_response(200)
+                self.send_header("Content-type", "application/octet-stream")
+                self.end_headers()
+                with open(filepath, "rb") as file:
+                    self.wfile.write(file.read())
+            else:
+                self.send_response(404)
+                self.end_headers()
+
         else:
             self.send_response(404)
             self.end_headers()
@@ -206,9 +237,8 @@ class AppStoreHandler(BaseHTTPRequestHandler):
                         save_date(unique_filename)
                         save_uploader(unique_filename, username)
 
-                        # Генерируем уникальный ID для приложения
-                        app_id = str(uuid.uuid4())
-                        save_id(app_name, app_id)
+                        # Сохраняем иконку
+                        extract_icon(app_content, unique_filename)
 
                         self.send_response(200)
                         self.send_header("Content-type", "text/plain")
