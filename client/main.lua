@@ -8,7 +8,7 @@ SpeedOS.LoadAPI("Programs/AppMarket.program/Resources/pkger")
 
 local imya, parol
 local authorized = false
-local server_addr = "http://3.67.161.133:11033"
+local server_addr = "http://127.0.0.1:5000"
 
 fs = SpeedOS.FS
 
@@ -422,10 +422,16 @@ function listApps()
                             end
                         end
 
+                        local maxAppNameWidth = columnWidth - 8
+                        local name2 = app.name2
+                        if #name2 > maxAppNameWidth then
+                            name2 = name2:sub(1, maxAppNameWidth - 3) .. "..."
+                        end
+
                         term.setCursorPos(xStart + 6, yStart)
                         term.setBackgroundColor(colors.white)
                         term.setTextColor(colors.black)
-                        term.write(app.name2)
+                        term.write(name2)
 
                         term.setCursorPos(xStart + 6, yStart + 1)
                         term.setBackgroundColor(colors.white)
